@@ -1,5 +1,6 @@
 #pragma once
-#include <vector>
+#ifndef DRINK_DRINK_H__
+#define DRINK_DRINK_H__
 
 namespace Drink {
 
@@ -32,3 +33,5 @@ namespace Drink {
 		bool isEmpty() const { return !_vol; }
 	};
 }
+
+#endif

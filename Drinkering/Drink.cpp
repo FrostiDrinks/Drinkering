@@ -35,35 +35,44 @@ namespace Drink {
 	void Water::menu() {
 		bool looper = false;
 		for (;;) {
+			std::cout << "What would you like to do?" << std::endl
+					  << "1) Add a bottle" << std::endl
+					  << "2) Take a shot" << std::endl
+					  << "3) View the collection" << std::endl
+					  << "4) Exit the program" << std::endl << std::endl;
 
-			std::cout << "What would you like to do?" << std::endl;
-			std::cout << "1) Add a bottle" << std::endl;
-			std::cout << "2) Take a shot" << std::endl;
-			std::cout << "3) View the collection" << std::endl;
-			std::cout << "4) Exit the program" << std::endl;
-			int selection = Drink::getNumeral<int>();
-			std::cout << std::endl;
-			switch (selection) {
+			switch (getNumeral<int>()) {
 			case 1:
 				addBottle();
 				break;
+
 			case 2: {
 				int i = getRand();
 				if (i == -1) break;
+
 				int shot = _bottles[i].takeShot();
 				const char* name = _bottles[i].getName();
-				if (shot == 0) { std::cout << "You have nothing left to drink!" << std::endl; break; }
-				std::cout << "The gods have decided for you to drink " << shot << "ml of " << name << ", good luck!" << std::endl << std::endl;
-				std::cout << "Press Enter to continue";
+
+				if (!shot) {
+					std::cout << "You have nothing left to drink!" << std::endl;
+					break;
+				}
+				std::cout << "The gods have decided for you to drink "
+					<< shot << "ml of " << name << ", good luck!"
+					<< std::endl << std::endl
+					<< "Press Enter to continue";
+
 				std::cin.get();
 				std::cout << std::endl;
-				if (_bottles[i].isEmpty()) std::cout << "Wow, you finished the whole bottle!" << std::endl;
+				if (_bottles[i].isEmpty())
+					std::cout << "Wow, you finished the whole bottle!" << std::endl;
 				break;
 			}
 			case 3:
-				if (!_size) { std::cout << "Please add a bottle first." << std::endl; break; }
-				display();
+				if (!_size) std::cout << "Please add a bottle first." << std::endl;
+				else display();
 				break;
+
 			case 4:
 				looper = true;
 				break;
@@ -78,14 +87,16 @@ namespace Drink {
 	}
 
 	void Water::addBottle() {
-		_bottles[_size++] = Bottle();
-		_bottles[_size - 1].getValues();
+		_bottles[_size] = Bottle();
+		_bottles[_size++].getValues();
 	}
 
 	int Water::getRand() const {
-		if (!_size) { std::cout << "You can't take a shot from nothing, can you?" << std::endl; return -1; }
+		if (!_size) { 
+			std::cout << "You can't take a shot from nothing, can you?" << std::endl; 
+			return -1; 
+		}
 		else return rand() % _size;
-		
 	}
 
 	Bottle::Bottle() {
@@ -108,9 +119,9 @@ namespace Drink {
 
 	void Bottle::getValues() {
 		char temp[128];
-
 		std::cout << "Enter bottle name: ";
-		std::cin.getline(temp, 100);
+
+		std::cin.getline(temp, 128);
 		_name = new char[strlen(temp) + 1];
 		strcpy_s(_name, strlen(temp) + 1, temp);
 
@@ -122,13 +133,11 @@ namespace Drink {
 	}
 
 	void Bottle::setValues(const char* name, int vol, float abv) {
-
 		if (!name) _name = nullptr;
 		else {
 			_name = new char[strlen(name) + 1];
 			strcpy_s(_name, strlen(name) + 1, name);
 		}
-
 		_vol = vol;
 		_abv = abv;
 	}
@@ -142,10 +151,10 @@ namespace Drink {
 }
 
 int main() {
-
 	std::cout << "Welcome to the epic drinking game!" << std::endl;
 	Drink::Water a = Drink::Water();
 	a.menu();
+
 	std::cout << "Goodbye my alcoholic friend!" << std::endl;
 	return 0;
 }
