@@ -25,6 +25,7 @@ namespace Drink {
 	Water::Water() {
 		_bottles = new Bottle[10];
 		_size = 0;
+		_shots = 0;
 	}
 
 	Water::~Water() {
@@ -52,15 +53,20 @@ namespace Drink {
 
 				int shot = _bottles[i].takeShot();
 				const char* name = _bottles[i].getName();
+				_shots++;
 
 				if (!shot) {
 					std::cout << "You have nothing left to drink!" << std::endl;
 					break;
 				}
+				
 				std::cout << "The gods have decided for you to drink "
-					<< shot << "ml of " << name << ", good luck!"
-					<< std::endl << std::endl
-					<< "Press Enter to continue";
+						  << shot << "ml of " << name << ", good luck!"
+						  << std::endl << std::endl
+						  << "You have taken " << _shots << " shot";
+
+				if (_shots > 1) std::cout << "s!";
+				std::cout << std::endl << "Press Enter to continue" << std::endl;
 
 				std::cin.get();
 				std::cout << std::endl;
@@ -111,10 +117,10 @@ namespace Drink {
 	}
 
 	void Bottle::display() {
-		std::cout << "===========================" << std::endl;
-		std::cout << _name << " | ";
-		std::cout << _vol << "ml | ";
-		std::cout << _abv << " %" << std::endl;
+		std::cout << "===========================" << std::endl
+				  << _name << " | "
+				  << _vol << "ml | "
+				  << _abv << " %" << std::endl;
 	}
 
 	void Bottle::getValues() {

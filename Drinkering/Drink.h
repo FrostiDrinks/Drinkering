@@ -9,6 +9,7 @@ namespace Drink {
 	class Water {
 		Bottle* _bottles;
 		int _size;
+		unsigned int _shots;
 	public:
 		Water();
 		~Water();
